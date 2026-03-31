@@ -1,192 +1,278 @@
 {
-  "0050": {
-    "name": "0050",
-    "price": 73.25,
-    "high": 81.8,
-    "rsi": 31.3,
-    "ma20": 75.71,
-    "advice": "🟢 技術面超跌 (回檔 10.5%)，適合建倉",
-    "status_type": "safe",
-    "buy_grids": [
-      73.25,
-      69.59,
-      65.92
-    ],
-    "sell_grids": [
-      80.58,
-      81.8
-    ],
-    "updated_at": "2026-03-31 02:06"
-  },
   "0056": {
     "name": "0056",
-    "price": 37.57,
-    "high": 40.36,
-    "rsi": 46.8,
+    "category": "dividend",
+    "price": 37.55,
+    "rsi": 46.6,
     "ma20": 38.46,
-    "advice": "🟢 殖利率達 9.6% (超值價)，適合重倉佈局",
-    "status_type": "safe",
+    "high": 40.36,
+    "atr": 0.35,
+    "trailing_div": 3.67,
+    "yield_rate": 9.8,
+    "advice": "🟢 殖利率達 9.8% (超值價)，大盤安全，建議資金減半建倉",
+    "status_type": "neutral",
     "buy_grids": [
-      45.0,
-      42.75,
-      40.5
+      52.4,
+      52.05
     ],
     "sell_grids": [
-      60.0,
-      72.0
+      40.36,
+      42.38
     ],
-    "updated_at": "2026-03-31 02:06"
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
   },
   "00878": {
     "name": "00878",
+    "category": "dividend",
     "price": 22.01,
-    "high": 23.78,
     "rsi": 50.2,
     "ma20": 22.34,
-    "advice": "🟢 殖利率達 10.0% (超值價)，適合重倉佈局",
-    "status_type": "safe",
+    "high": 23.78,
+    "atr": 0.2,
+    "trailing_div": 1.69,
+    "yield_rate": 7.7,
+    "advice": "🟢 殖利率達 7.7% (超值價)，大盤安全，建議資金減半建倉",
+    "status_type": "neutral",
     "buy_grids": [
-      27.5,
-      26.12,
-      24.75
+      24.14,
+      23.94
     ],
     "sell_grids": [
-      36.67,
-      44.0
+      23.78,
+      24.97
     ],
-    "updated_at": "2026-03-31 02:06"
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
   },
   "00919": {
     "name": "00919",
-    "price": 22.23,
-    "high": 23.87,
-    "rsi": 35.1,
+    "category": "dividend",
+    "price": 22.22,
+    "rsi": 34.9,
     "ma20": 22.76,
-    "advice": "🟢 殖利率達 12.6% (超值價)，適合重倉佈局",
-    "status_type": "safe",
+    "high": 23.87,
+    "atr": 0.19,
+    "trailing_div": 2.58,
+    "yield_rate": 11.6,
+    "advice": "🟢 殖利率達 11.6% (超值價)，大盤安全，建議資金減半建倉",
+    "status_type": "neutral",
     "buy_grids": [
-      35.0,
-      33.25,
-      31.5
+      36.86,
+      36.67
     ],
     "sell_grids": [
-      46.67,
-      56.0
+      23.87,
+      25.07
     ],
-    "updated_at": "2026-03-31 02:06"
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
   },
   "00918": {
     "name": "00918",
-    "price": 21.87,
-    "high": 23.39,
-    "rsi": 36.1,
+    "category": "dividend",
+    "price": 21.84,
+    "rsi": 35.6,
     "ma20": 22.37,
-    "advice": "🟢 殖利率達 13.7% (超值價)，適合重倉佈局",
-    "status_type": "safe",
-    "buy_grids": [
-      37.5,
-      35.62,
-      33.75
-    ],
-    "sell_grids": [
-      50.0,
-      60.0
-    ],
-    "updated_at": "2026-03-31 02:06"
-  },
-  "00993A": {
-    "name": "00993A",
-    "price": 10.25,
-    "high": 11.05,
-    "rsi": 45.5,
-    "ma20": 10.44,
-    "advice": "🟡 趨勢整理中，維持網格紀律操作",
+    "high": 23.39,
+    "atr": 0.19,
+    "trailing_div": 2.4,
+    "yield_rate": 11.0,
+    "advice": "🟢 殖利率達 11.0% (超值價)，大盤安全，建議資金減半建倉",
     "status_type": "neutral",
     "buy_grids": [
-      10.04,
-      10.17,
-      9.39
+      34.36,
+      34.17
     ],
     "sell_grids": [
-      11.05,
-      12.16
+      23.39,
+      24.56
     ],
-    "updated_at": "2026-03-31 02:06"
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
+  },
+  "00939": {
+    "name": "00939",
+    "category": "dividend",
+    "price": 15.19,
+    "rsi": 37.6,
+    "ma20": 15.61,
+    "high": 16.68,
+    "atr": 0.17,
+    "trailing_div": 0.78,
+    "yield_rate": 5.1,
+    "advice": "🟡 殖利率 5.1% (合理區)，耐心等待更低網格",
+    "status_type": "neutral",
+    "buy_grids": [
+      14.11,
+      11.09
+    ],
+    "sell_grids": [
+      16.68,
+      17.52
+    ],
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
+  },
+  "00940": {
+    "name": "00940",
+    "category": "dividend",
+    "price": 9.5,
+    "rsi": 41.2,
+    "ma20": 9.63,
+    "high": 9.98,
+    "atr": 0.07,
+    "trailing_div": 0.47,
+    "yield_rate": 4.9,
+    "advice": "🟡 殖利率 4.9% (合理區)，耐心等待更低網格",
+    "status_type": "neutral",
+    "buy_grids": [
+      8.55,
+      6.71
+    ],
+    "sell_grids": [
+      9.98,
+      10.48
+    ],
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
+  },
+  "0050": {
+    "name": "0050",
+    "category": "market",
+    "price": 73.15,
+    "rsi": 31.1,
+    "ma20": 75.7,
+    "high": 81.8,
+    "atr": 0.95,
+    "trailing_div": 1.36,
+    "yield_rate": "-",
+    "advice": "🟢 價格回檔達 10.6%，大盤安全，建議縮小部位承接",
+    "status_type": "neutral",
+    "buy_grids": [
+      73.15,
+      71.72
+    ],
+    "sell_grids": [
+      81.8,
+      85.89
+    ],
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
+  },
+  "006208": {
+    "name": "006208",
+    "category": "market",
+    "price": 169.95,
+    "rsi": 44.5,
+    "ma20": 176.17,
+    "high": 189.4,
+    "atr": 2.65,
+    "trailing_div": 4.44,
+    "yield_rate": "-",
+    "advice": "🟢 價格回檔達 10.3%，大盤安全，建議縮小部位承接",
+    "status_type": "neutral",
+    "buy_grids": [
+      169.95,
+      165.98
+    ],
+    "sell_grids": [
+      189.4,
+      198.87
+    ],
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
   },
   "00981A": {
     "name": "00981A",
-    "price": 20.03,
-    "high": 21.33,
-    "rsi": 54.6,
+    "category": "strategy",
+    "price": 20.0,
+    "rsi": 54.2,
     "ma20": 19.96,
-    "advice": "🟡 趨勢整理中，維持網格紀律操作",
+    "high": 21.33,
+    "atr": 0.3,
+    "trailing_div": 0.41,
+    "yield_rate": "-",
+    "advice": "🟡 價格於均線附近震盪，小量低掛或觀望",
     "status_type": "neutral",
     "buy_grids": [
-      19.63,
-      19.62,
-      18.13
+      19.56,
+      19.2
     ],
     "sell_grids": [
       21.33,
-      23.46
+      22.4
     ],
-    "updated_at": "2026-03-31 02:06"
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
   },
   "00982A": {
     "name": "00982A",
-    "price": 16.13,
+    "category": "strategy",
+    "price": 16.1,
+    "rsi": 48.6,
+    "ma20": 16.19,
     "high": 17.1,
-    "rsi": 49.1,
-    "ma20": 16.2,
-    "advice": "🟡 趨勢整理中，維持網格紀律操作",
+    "atr": 0.23,
+    "trailing_div": 0.38,
+    "yield_rate": "-",
+    "advice": "🟡 價格於均線附近震盪，小量低掛或觀望",
     "status_type": "neutral",
     "buy_grids": [
-      15.81,
-      15.73,
-      14.54
+      15.87,
+      15.39
     ],
     "sell_grids": [
       17.1,
-      18.81
+      17.96
     ],
-    "updated_at": "2026-03-31 02:06"
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
   },
   "009816": {
     "name": "009816",
-    "price": 10.38,
-    "high": 11.56,
-    "rsi": 33.9,
+    "category": "strategy",
+    "price": 10.37,
+    "rsi": 33.7,
     "ma20": 10.68,
-    "advice": "🟢 技術面超跌 (回檔 10.2%)，適合建倉",
-    "status_type": "safe",
+    "high": 11.56,
+    "atr": 0.12,
+    "trailing_div": 0.0,
+    "yield_rate": "-",
+    "advice": "🟢 價格回檔達 10.3%，大盤安全，建議縮小部位承接",
+    "status_type": "neutral",
     "buy_grids": [
-      10.38,
-      9.86,
-      9.34
+      10.37,
+      10.18
     ],
     "sell_grids": [
-      11.42,
-      11.56
+      11.56,
+      12.14
     ],
-    "updated_at": "2026-03-31 02:06"
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
   },
   "00988A": {
     "name": "00988A",
-    "price": 12.21,
-    "high": 13.48,
-    "rsi": 40.9,
+    "category": "strategy",
+    "price": 12.13,
+    "rsi": 40.1,
     "ma20": 12.7,
-    "advice": "🟡 趨勢整理中，維持網格紀律操作",
+    "high": 13.48,
+    "atr": 0.27,
+    "trailing_div": 0.0,
+    "yield_rate": "-",
+    "advice": "🟢 價格回檔達 10.0%，大盤安全，建議縮小部位承接",
     "status_type": "neutral",
     "buy_grids": [
-      11.97,
-      12.4,
-      11.46
+      12.13,
+      11.73
     ],
     "sell_grids": [
       13.48,
-      14.83
+      14.15
     ],
-    "updated_at": "2026-03-31 02:06"
+    "market_regime": "🟡 盤整震盪 (縮小部位)",
+    "updated_at": "2026-03-31 02:35"
   }
 }
