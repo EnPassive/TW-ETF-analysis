@@ -11,159 +11,89 @@
     .header { text-align: center; margin-bottom: 30px; }
     .header h1 { color: var(--primary); margin-bottom: 8px; font-size: 28px; }
     .header span { color: var(--accent); }
-    
-    .market-banner { text-align:center; margin: 20px 0 30px 0; padding: 20px; background: #ffffff; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .market-banner { text-align:center; margin-bottom: 30px; padding: 20px; background: #fff; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
     .market-banner h2 { margin: 0; font-size: 22px; color: var(--primary); }
-    .market-banner p { margin: 8px 0 0 0; font-size: 15px; color: #64748b; }
-
-    .section-title { font-size: 20px; color: var(--primary); margin: 40px 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid var(--border); display: flex; align-items: center; gap: 8px; }
-    
+    .section-title { font-size: 20px; color: var(--primary); margin: 40px 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
     .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
     .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); position: relative; overflow: hidden; }
-    
     .status-safe { border-top: 4px solid var(--green); }
     .status-warning { border-top: 4px solid var(--red); }
     .status-neutral { border-top: 4px solid #eab308; }
-    
     .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
     .symbol { font-size: 20px; font-weight: bold; color: var(--primary); }
     .price { font-size: 24px; font-weight: bold; color: var(--accent); }
-    
-    .advice { font-size: 15px; font-weight: bold; margin-bottom: 15px; padding: 10px; background: #f1f5f9; border-radius: 6px; }
+    .advice { font-size: 15px; font-weight: bold; margin-bottom: 15px; padding: 10px; border-radius: 6px; }
     .advice.safe { color: #166534; background: #dcfce7; }
     .advice.warning { color: #991b1b; background: #fee2e2; }
     .advice.neutral { color: #854d0e; background: #fef9c3; }
-
-    .stats { display: flex; justify-content: space-between; font-size: 13px; color: #64748b; margin-bottom: 15px; flex-wrap: wrap; gap: 5px;}
-    .stats span { background: #f1f5f9; padding: 4px 8px; border-radius: 4px; }
-    
+    .stats { display: flex; justify-content: space-between; font-size: 12px; color: #64748b; margin-bottom: 15px; flex-wrap: wrap; gap: 5px;}
+    .stats span { background: #f1f5f9; padding: 4px 8px; border-radius: 4px; flex: 1 1 45%; text-align: center;}
     .action-section { display: flex; gap: 10px; margin-top: 10px; }
     .action-box { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid var(--border); background: #f8fafc; }
-    .action-title { font-size: 12px; color: #64748b; font-weight: bold; margin-bottom: 5px; }
-    .action-vals { font-size: 15px; font-weight: bold; letter-spacing: 0.5px; }
+    .action-title { font-size: 11px; color: #64748b; font-weight: bold; margin-bottom: 5px; }
+    .action-vals { font-size: 14px; font-weight: bold; }
     .buy-color { color: var(--green); }
     .sell-color { color: var(--red); }
-    
-    .update-time { text-align: center; margin-top: 40px; font-size: 13px; color: #94a3b8; }
+    .update-time { text-align: center; margin-top: 40px; font-size: 12px; color: #94a3b8; }
     .loading { text-align: center; padding: 50px; font-size: 18px; color: #64748b; }
-    
     .empty-msg { color: #94a3b8; font-style: italic; font-size: 14px; grid-column: 1 / -1; }
   </style>
 </head>
 <body>
-
 <div class="container">
-  <div class="header">
-    <h1>EnPassive <span>戰術決策儀表板</span></h1>
-    <p>每日自動化盤後分析，嚴守紀律的資產配置系統</p>
-  </div>
-
-  <div class="market-banner">
-    <h2>🏛️ 台股總體情勢：<span id="marketStatus">讀取中...</span></h2>
-    <p>大盤位階決定資金水位，多頭分批佈局，空頭嚴格防守。</p>
-  </div>
-
-  <h2 class="section-title">💰 收益核心 (高股息 ETF)</h2>
-  <div id="grid-dividend" class="grid-layout"><div class="loading">讀取中...</div></div>
-
-  <h2 class="section-title">📈 成長核心 (市值型 ETF)</h2>
-  <div id="grid-market" class="grid-layout"><div class="loading">讀取中...</div></div>
-
-  <h2 class="section-title">🚀 衛星配置 (主動/策略型 ETF)</h2>
-  <div id="grid-strategy" class="grid-layout"><div class="loading">讀取中...</div></div>
-  
+  <div class="header"><h1>EnPassive <span>戰術決策儀表板</span></h1><p>每日自動化盤後分析，嚴守紀律的資產配置系統</p></div>
+  <div class="market-banner"><h2>🏛️ 台股總體情勢：<span id="marketStatus">讀取中...</span></h2><p>大盤位階決定資金水位，多頭分批佈局，空頭嚴格防守。</p></div>
+  <h2 class="section-title">💰 收益核心 (高股息 ETF)</h2><div id="grid-dividend" class="grid-layout"><div class="loading">讀取中...</div></div>
+  <h2 class="section-title">📈 成長核心 (市值型 ETF)</h2><div id="grid-market" class="grid-layout"><div class="loading">讀取中...</div></div>
+  <h2 class="section-title">🚀 衛星配置 (主動/策略型 ETF)</h2><div id="grid-strategy" class="grid-layout"><div class="loading">讀取中...</div></div>
   <div class="update-time" id="lastUpdate"></div>
 </div>
-
 <script>
   function createCardHTML(symbol, info) {
-    const buyPrices = info.buy_grids.length > 0 ? info.buy_grids.map(p => p.toFixed(2)).join(' / ') : '--';
-    const sellPrices = info.sell_grids.length > 0 ? info.sell_grids.map(p => p.toFixed(2)).join(' / ') : '--';
-    
+    const buyPrices = info.buy_grids.length > 0 ? info.buy_grids.join(' / ') : '--';
+    const sellPrices = info.sell_grids.length > 0 ? info.sell_grids.join(' / ') : '--';
     return `
       <div class="card status-${info.status_type}">
-        <div class="card-header">
-          <div class="symbol">${symbol}</div>
-          <div class="price">${info.price.toFixed(2)}</div>
-        </div>
-        
-        <div class="advice ${info.status_type}">
-          ${info.advice}
-        </div>
-        
+        <div class="card-header"><div class="symbol">${symbol}</div><div class="price">${info.price}</div></div>
+        <div class="advice ${info.status_type}">${info.advice}</div>
         <div class="stats">
-          <span>RSI: <b>${info.rsi}</b></span>
-          <span>月線: <b>${info.ma20}</b></span>
+          <span>RSI: <b>${info.rsi}</b></span><span>月線: <b>${info.ma20}</b></span>
           <span>近四季配息: <b>${info.trailing_div > 0 ? info.trailing_div + '元' : '--'}</b></span>
           <span>真實殖利率: <b>${info.yield_rate !== "-" ? info.yield_rate + '%' : '--'}</b></span>
         </div>
-        
         <div class="action-section">
-          <div class="action-box">
-            <div class="action-title">🛒 網格買進建議</div>
-            <div class="action-vals buy-color">${buyPrices}</div>
-          </div>
-          <div class="action-box">
-            <div class="action-title">🎯 網格賣出建議</div>
-            <div class="action-vals sell-color">${sellPrices}</div>
-          </div>
+          <div class="action-box"><div class="action-title">🛒 網格買進建議</div><div class="action-vals buy-color">${buyPrices}</div></div>
+          <div class="action-box"><div class="action-title">🎯 網格賣出建議</div><div class="action-vals sell-color">${sellPrices}</div></div>
         </div>
       </div>
     `;
   }
-
   async function loadData() {
     try {
       const res = await fetch('data.json?t=' + Date.now());
-      if (!res.ok) throw new Error('找不到資料');
-      
       const data = await res.json();
-      
-      // 清空預設載入文字
       document.getElementById('grid-dividend').innerHTML = '';
       document.getElementById('grid-market').innerHTML = '';
       document.getElementById('grid-strategy').innerHTML = '';
-      
-      let lastUpdateTime = '';
-
-      // 更新大盤狀態
-      const firstKey = Object.keys(data)[0];
-      if(firstKey) {
-          document.getElementById('marketStatus').innerHTML = data[firstKey].market_regime;
-      }
-
-      // 分發卡片至對應區塊
+      let lastUpdate = '';
+      const first = Object.keys(data)[0];
+      if(first) document.getElementById('marketStatus').innerHTML = data[first].market_regime;
       for (const [symbol, info] of Object.entries(data)) {
-        lastUpdateTime = info.updated_at;
-        const cardHTML = createCardHTML(symbol, info);
-        
-        if (info.category === 'dividend') {
-            document.getElementById('grid-dividend').innerHTML += cardHTML;
-        } else if (info.category === 'market') {
-            document.getElementById('grid-market').innerHTML += cardHTML;
-        } else if (info.category === 'strategy') {
-            document.getElementById('grid-strategy').innerHTML += cardHTML;
-        }
+        lastUpdate = info.updated_at;
+        const html = createCardHTML(symbol, info);
+        if (info.category === 'dividend') document.getElementById('grid-dividend').innerHTML += html;
+        else if (info.category === 'market') document.getElementById('grid-market').innerHTML += html;
+        else if (info.category === 'strategy') document.getElementById('grid-strategy').innerHTML += html;
       }
-      
-      // 若某區塊為空，顯示提示
       ['dividend', 'market', 'strategy'].forEach(cat => {
           const el = document.getElementById(`grid-${cat}`);
-          if(el.innerHTML.trim() === '') {
-              el.innerHTML = '<div class="empty-msg">目前無相關標的資料</div>';
-          }
+          if(el.innerHTML.trim() === '') el.innerHTML = '<div class="empty-msg">目前無相關標的資料</div>';
       });
-      
-      document.getElementById('lastUpdate').innerText = `最後分析更新時間：${lastUpdateTime} (盤後自動執行)`;
-      
-    } catch (error) {
-      document.getElementById('grid-dividend').innerHTML = `<div class="empty-msg" style="color:#991b1b;">⚠️ 尚未生成數據檔案。請至 GitHub Actions 執行自動化排程。</div>`;
-      document.getElementById('grid-market').innerHTML = '';
-      document.getElementById('grid-strategy').innerHTML = '';
-      console.error(error);
+      document.getElementById('lastUpdate').innerText = `最後分析更新時間：${lastUpdate} (盤後自動執行)`;
+    } catch (e) {
+      document.getElementById('grid-dividend').innerHTML = `<div class="empty-msg">⚠️ 尚未生成數據。請至 GitHub Actions 執行分析。</div>`;
     }
   }
-
   loadData();
 </script>
 </body>
