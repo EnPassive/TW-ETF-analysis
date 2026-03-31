@@ -11,8 +11,17 @@
     .header { text-align: center; margin-bottom: 30px; }
     .header h1 { color: var(--primary); margin-bottom: 8px; font-size: 28px; }
     .header span { color: var(--accent); }
-    .market-banner { text-align:center; margin-bottom: 30px; padding: 20px; background: #fff; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    
+    .market-banner { text-align:center; padding: 20px; background: #fff; border-radius: 12px 12px 0 0; border: 1px solid var(--border); border-bottom: none; }
     .market-banner h2 { margin: 0; font-size: 22px; color: var(--primary); }
+    
+    /* 新增：決策總結區樣式 */
+    .summary-box { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 0 0 12px 12px; padding: 20px; margin-bottom: 40px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+    .summary-title { font-weight: bold; color: #3730a3; margin-bottom: 10px; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+    .summary-content { font-size: 15px; line-height: 1.8; color: #1e1b4b; }
+    .buy-tag { background: var(--green); color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin: 0 4px; }
+    .sell-tag { background: var(--red); color: white; padding: 2px 8px; border-radius: 4px; font-weight: bold; margin: 0 4px; }
+
     .section-title { font-size: 20px; color: var(--primary); margin: 40px 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid var(--border); }
     .grid-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
     .card { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); border: 1px solid var(--border); position: relative; overflow: hidden; }
@@ -36,13 +45,19 @@
     .sell-color { color: var(--red); }
     .update-time { text-align: center; margin-top: 40px; font-size: 12px; color: #94a3b8; }
     .loading { text-align: center; padding: 50px; font-size: 18px; color: #64748b; }
-    .empty-msg { color: #94a3b8; font-style: italic; font-size: 14px; grid-column: 1 / -1; }
   </style>
 </head>
 <body>
 <div class="container">
   <div class="header"><h1>EnPassive <span>戰術決策儀表板</span></h1><p>每日自動化盤後分析，嚴守紀律的資產配置系統</p></div>
-  <div class="market-banner"><h2>🏛️ 台股總體情勢：<span id="marketStatus">讀取中...</span></h2><p>大盤位階決定資金水位，多頭分批佈局，空頭嚴格防守。</p></div>
+  
+  <div class="market-banner"><h2>🏛️ 台股總體情勢：<span id="marketStatus">讀取中...</span></h2></div>
+  
+  <div class="summary-box">
+    <div class="summary-title">💡 今日執行建議 (人話版)</div>
+    <div id="decisionSummary" class="summary-content">分析數據中，請稍候...</div>
+  </div>
+
   <h2 class="section-title">💰 收益核心 (高股息 ETF)</h2><div id="grid-dividend" class="grid-layout"><div class="loading">讀取中...</div></div>
   <h2 class="section-title">📈 成長核心 (市值型 ETF)</h2><div id="grid-market" class="grid-layout"><div class="loading">讀取中...</div></div>
   <h2 class="section-title">🚀 衛星配置 (主動/策略型 ETF)</h2><div id="grid-strategy" class="grid-layout"><div class="loading">讀取中...</div></div>
@@ -68,30 +83,44 @@
       </div>
     `;
   }
+
   async function loadData() {
     try {
       const res = await fetch('data.json?t=' + Date.now());
       const data = await res.json();
-      document.getElementById('grid-dividend').innerHTML = '';
-      document.getElementById('grid-market').innerHTML = '';
-      document.getElementById('grid-strategy').innerHTML = '';
-      let lastUpdate = '';
+      
+      const grids = { dividend: document.getElementById('grid-dividend'), market: document.getElementById('grid-market'), strategy: document.getElementById('grid-strategy') };
+      Object.values(grids).forEach(el => el.innerHTML = '');
+      
+      let buyTargets = [], sellTargets = [], lastUpdate = '';
       const first = Object.keys(data)[0];
       if(first) document.getElementById('marketStatus').innerHTML = data[first].market_regime;
+
       for (const [symbol, info] of Object.entries(data)) {
         lastUpdate = info.updated_at;
+        if (info.status_type === 'safe') buyTargets.push(symbol);
+        if (info.status_type === 'warning') sellTargets.push(symbol);
+        
         const html = createCardHTML(symbol, info);
-        if (info.category === 'dividend') document.getElementById('grid-dividend').innerHTML += html;
-        else if (info.category === 'market') document.getElementById('grid-market').innerHTML += html;
-        else if (info.category === 'strategy') document.getElementById('grid-strategy').innerHTML += html;
+        if (grids[info.category]) grids[info.category].innerHTML += html;
       }
-      ['dividend', 'market', 'strategy'].forEach(cat => {
-          const el = document.getElementById(`grid-${cat}`);
-          if(el.innerHTML.trim() === '') el.innerHTML = '<div class="empty-msg">目前無相關標的資料</div>';
-      });
+
+      // 更新總結文字
+      let summaryText = "";
+      if (buyTargets.length > 0) {
+          summaryText += `🟢 <b>今日可優先佈局標的：</b> <span class="buy-tag">${buyTargets.join('</span> <span class="buy-tag">')}</span>。目前這些標的已進入低接區間，請參考下方網格價下單。<br>`;
+      }
+      if (sellTargets.length > 0) {
+          summaryText += `🔴 <b>建議考慮減碼標的：</b> <span class="sell-tag">${sellTargets.join('</span> <span class="sell-tag">')}</span>。部分標的已出現過熱或大盤轉弱訊號，建議入袋為安。<br>`;
+      }
+      if (buyTargets.length === 0 && sellTargets.length === 0) {
+          summaryText = "🟡 <b>目前市場無明顯佈局信號：</b> 所有標的均在合理區間震盪，建議維持既有持股，耐心等待更佳的回測機會。";
+      }
+      document.getElementById('decisionSummary').innerHTML = summaryText;
+
       document.getElementById('lastUpdate').innerText = `最後分析更新時間：${lastUpdate} (盤後自動執行)`;
     } catch (e) {
-      document.getElementById('grid-dividend').innerHTML = `<div class="empty-msg">⚠️ 尚未生成數據。請至 GitHub Actions 執行分析。</div>`;
+      document.getElementById('decisionSummary').innerHTML = "⚠️ 無法載入分析數據。";
     }
   }
   loadData();
