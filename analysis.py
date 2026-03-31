@@ -3,110 +3,123 @@ import pandas as pd
 import json
 from datetime import datetime
 
-# 1. 預設標的清單 (Yahoo Finance 需加上 .TW)
-STOCKS = [
-    '0050.TW', '0056.TW', '00878.TW', '00919.TW', '00918.TW', 
-    '00993A.TW', '00981A.TW', '00982A.TW', '009816.TW', '00988A.TW'
-]
+# 1. 標的清單分三類
+STOCKS_DIVIDEND = ['0056.TW', '00878.TW', '00919.TW', '00918.TW', '00939.TW', '00940.TW']
+STOCKS_MARKET = ['0050.TW', '006208.TW']
+STOCKS_STRATEGY = ['00981A.TW', '00982A.TW', '009816.TW', '00988A.TW']
+ALL_STOCKS = STOCKS_DIVIDEND + STOCKS_MARKET + STOCKS_STRATEGY
 
-# 2. 殖利率模型參數：預估年度總配息 (元)
-# 您未來只需在這裡更新各檔高股息 ETF 的「預期全年配息金額」
-DIVIDEND_MAP = {
-    '0056': 3.6,   
-    '00878': 2.2,  
-    '00919': 2.8,  
-    '00918': 3.0,
-    # 以下為市值型或新上市尚未有穩定配息之標的，設為 None 走技術面判斷
-    '0050': None,
-    '00981A': None,
-    '00993A': None,
-    '00982A': None,
-    '009816': None,
-    '00988A': None
-}
-
-def get_enhanced_advice(symbol_short, current_price, rsi, ma20, period_high):
-    est_div = DIVIDEND_MAP.get(symbol_short)
-    
-    # === 判斷邏輯 A：高股息殖利率模型 ===
-    if est_div is not None:
-        yield_rate = (est_div / current_price) * 100
-        cheap_price = est_div / 0.08      # 8% 殖利率 (便宜價)
-        fair_price = est_div / 0.06       # 6% 殖利率 (合理價)
-        expensive_price = est_div / 0.05  # 5% 殖利率 (昂貴價)
+# 2. 獲取大盤狀態 (市場濾網)
+def get_market_regime():
+    try:
+        twii = yf.Ticker("^TWII").history(period="6mo")
+        if twii.empty: return "unknown"
         
-        if yield_rate >= 8.0:
-            return f"🟢 殖利率達 {yield_rate:.1f}% (超值價)，適合重倉佈局", "safe", [cheap_price, cheap_price*0.95, cheap_price*0.9], [fair_price, expensive_price]
-        elif yield_rate <= 5.0:
-            return f"🔴 殖利率僅 {yield_rate:.1f}% (偏貴)，建議減碼或觀望", "warning", [fair_price, cheap_price, cheap_price*0.9], [expensive_price, expensive_price*1.1]
+        twii['MA20'] = twii['Close'].rolling(window=20).mean()
+        twii['MA60'] = twii['Close'].rolling(window=60).mean()
+        latest = twii.iloc[-1]
+        
+        if latest['Close'] > latest['MA60'] and latest['Close'] > latest['MA20']:
+            return "bull"  # 多頭：站上月季線
+        elif latest['Close'] < latest['MA60']:
+            return "bear"  # 空頭：跌破季線
         else:
-            return f"🟡 殖利率 {yield_rate:.1f}% (合理區)，建議分批低掛", "neutral", [current_price*0.98, fair_price, cheap_price], [expensive_price, expensive_price*1.1]
+            return "consolidation" # 盤整
+    except:
+        return "unknown"
 
-    # === 判斷邏輯 B：市值型/成長型/主動型 (技術指標模型) ===
+# 3. 動態抓取近四季配息總和
+def get_trailing_12m_dividend(ticker_obj):
+    try:
+        divs = ticker_obj.dividends
+        if divs.empty: return 0.0
+        last_year_divs = divs[divs.index > (pd.Timestamp.now(tz=divs.index.tz) - pd.DateOffset(years=1))]
+        return float(last_year_divs.sum())
+    except:
+        return 0.0
+
+# 4. 核心決策引擎
+def get_disciplined_advice(symbol, current_price, rsi, ma20, period_high, atr, market_regime, trailing_div):
+    is_dividend_etf = (symbol + '.TW') in STOCKS_DIVIDEND
+    yield_rate = 0.0
+    
+    # --- 風控第一層：空頭市場強制防禦 ---
+    if market_regime == "bear":
+        extreme_buy = period_high * 0.85
+        if current_price <= extreme_buy:
+            return "🟡 空頭極端超跌，僅限動用小資金摸底", "warning", [extreme_buy, extreme_buy*0.95], [ma20], 0.0
+        else:
+            return "🔴 大盤空頭確認，嚴禁攤平加碼，滿手現金觀望", "warning", [], [ma20, period_high*0.9], 0.0
+
+    # --- 風控第二層：多頭/盤整市場的買賣邏輯 ---
+    buys = []
+    sells = []
+    advice = ""
+    status = "neutral"
+
+    if is_dividend_etf and trailing_div > 0:
+        yield_rate = (trailing_div / current_price) * 100
+        cheap = trailing_div / 0.07   
+        fair = trailing_div / 0.055   
+        expensive = trailing_div / 0.045 
+
+        if yield_rate >= 7.0 and rsi < 60:
+            advice = f"🟢 殖利率達 {yield_rate:.1f}% (超值價)，大盤安全，可正常建倉"
+            status = "safe"
+            buys = [cheap, cheap - atr]
+        elif yield_rate <= 4.5 or rsi > 70:
+            advice = f"🔴 殖利率僅 {yield_rate:.1f}% 或短線過熱，禁止買進，建議減碼"
+            status = "warning"
+            sells = [current_price * 1.05, expensive]
+        else:
+            advice = f"🟡 殖利率 {yield_rate:.1f}% (合理區)，耐心等待更低網格"
+            status = "neutral"
+            buys = [fair, cheap]
+
     else:
         drop_from_high = ((period_high - current_price) / period_high) * 100
         
-        if rsi < 35 or drop_from_high > 10:
-            return f"🟢 技術面超跌 (回檔 {drop_from_high:.1f}%)，適合建倉", "safe", [current_price, current_price*0.95, current_price*0.9], [current_price*1.1, period_high]
-        elif rsi > 70 or current_price > ma20 * 1.15:
-            return "🔴 乖離率過高，短線過熱追高風險大", "warning", [ma20, ma20*0.95, period_high*0.85], [current_price*1.05, current_price*1.1]
+        if rsi < 40 or drop_from_high > 8:
+            advice = f"🟢 價格回檔達 {drop_from_high:.1f}%，大盤安全，可分批承接"
+            status = "safe"
+            buys = [current_price, current_price - atr*1.5]
+        elif rsi > 75:
+            advice = "🔴 RSI 嚴重過熱 (>75)，嚴禁追高，準備停利"
+            status = "warning"
+            sells = [current_price, current_price + atr*2]
         else:
-            return "🟡 趨勢整理中，維持網格紀律操作", "neutral", [current_price*0.98, period_high*0.92, period_high*0.85], [period_high, period_high*1.1]
+            advice = "🟡 價格於均線附近震盪，小量低掛或觀望"
+            status = "neutral"
+            buys = [ma20 * 0.98, period_high * 0.9]
+
+    # --- 風控微調：盤整盤的資金控管 ---
+    if market_regime == "consolidation" and status == "safe":
+        advice = advice.replace("可正常建倉", "建議資金減半建倉").replace("可分批承接", "建議縮小部位承接")
+        status = "neutral"
+
+    if not sells: sells = [period_high, period_high * 1.05]
+    if not buys: buys = [current_price * 0.9]
+
+    return advice, status, buys, sells, yield_rate
 
 def main():
     results = {}
-    for symbol in STOCKS:
+    market_regime = get_market_regime()
+    print(f"目前大盤狀態: {market_regime}")
+
+    market_text = "🟢 多頭市場 (適合佈局)" if market_regime == "bull" else ("🔴 空頭市場 (防禦優先)" if market_regime == "bear" else "🟡 盤整震盪 (縮小部位)")
+
+    for symbol in ALL_STOCKS:
         try:
             short_name = symbol.replace('.TW', '')
+            
+            # 定義該 ETF 屬於哪一個分類
+            if symbol in STOCKS_DIVIDEND:
+                category = "dividend"
+            elif symbol in STOCKS_MARKET:
+                category = "market"
+            else:
+                category = "strategy"
+
             ticker = yf.Ticker(symbol)
-            # 抓取近半年資料，排除空值
             df = ticker.history(period="6mo")
-            if df.empty:
-                print(f"[{short_name}] 目前無歷史資料 (可能為新上市)")
-                continue
-            
-            # 計算 MA20
-            df['MA20'] = df['Close'].rolling(window=20).mean()
-            
-            # 計算 RSI
-            delta = df['Close'].diff()
-            gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
-            loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
-            rs = gain / loss
-            df['RSI'] = 100 - (100 / (1 + rs))
-            
-            latest = df.iloc[-1]
-            period_high = df['High'].max()
-            current_price = latest['Close']
-            
-            # 防呆機制：若資料不足導致 RSI/MA20 為 NaN，設定預設值
-            rsi_val = latest['RSI'] if not pd.isna(latest['RSI']) else 50
-            ma20_val = latest['MA20'] if not pd.isna(latest['MA20']) else current_price
-
-            advice_text, status_type, buys, sells = get_enhanced_advice(
-                short_name, current_price, rsi_val, ma20_val, period_high
-            )
-            
-            results[short_name] = {
-                'name': short_name,
-                'price': round(current_price, 2),
-                'high': round(period_high, 2),
-                'rsi': round(rsi_val, 1),
-                'ma20': round(ma20_val, 2),
-                'advice': advice_text,
-                'status_type': status_type,
-                'buy_grids': [round(b, 2) for b in buys],
-                'sell_grids': [round(s, 2) for s in sells],
-                'updated_at': datetime.now().strftime("%Y-%m-%d %H:%M")
-            }
-            print(f"[{short_name}] 分析完成")
-            
-        except Exception as e:
-            print(f"處理 {symbol} 時發生錯誤: {e}")
-
-    # 輸出成 JSON 檔案供前端讀取
-    with open('data.json', 'w', encoding='utf-8') as f:
-        json.dump(results, f, ensure_ascii=False, indent=2)
-
-if __name__ == "__main__":
-    main()
