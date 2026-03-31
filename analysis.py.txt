@@ -1,0 +1,112 @@
+import yfinance as yf
+import pandas as pd
+import json
+from datetime import datetime
+
+# 1. 預設標的清單 (Yahoo Finance 需加上 .TW)
+STOCKS = [
+    '0050.TW', '0056.TW', '00878.TW', '00919.TW', '00918.TW', 
+    '00993A.TW', '00981A.TW', '00982A.TW', '009816.TW', '00988A.TW'
+]
+
+# 2. 殖利率模型參數：預估年度總配息 (元)
+# 您未來只需在這裡更新各檔高股息 ETF 的「預期全年配息金額」
+DIVIDEND_MAP = {
+    '0056': 3.6,   
+    '00878': 2.2,  
+    '00919': 2.8,  
+    '00918': 3.0,
+    # 以下為市值型或新上市尚未有穩定配息之標的，設為 None 走技術面判斷
+    '0050': None,
+    '00981A': None,
+    '00993A': None,
+    '00982A': None,
+    '009816': None,
+    '00988A': None
+}
+
+def get_enhanced_advice(symbol_short, current_price, rsi, ma20, period_high):
+    est_div = DIVIDEND_MAP.get(symbol_short)
+    
+    # === 判斷邏輯 A：高股息殖利率模型 ===
+    if est_div is not None:
+        yield_rate = (est_div / current_price) * 100
+        cheap_price = est_div / 0.08      # 8% 殖利率 (便宜價)
+        fair_price = est_div / 0.06       # 6% 殖利率 (合理價)
+        expensive_price = est_div / 0.05  # 5% 殖利率 (昂貴價)
+        
+        if yield_rate >= 8.0:
+            return f"🟢 殖利率達 {yield_rate:.1f}% (超值價)，適合重倉佈局", "safe", [cheap_price, cheap_price*0.95, cheap_price*0.9], [fair_price, expensive_price]
+        elif yield_rate <= 5.0:
+            return f"🔴 殖利率僅 {yield_rate:.1f}% (偏貴)，建議減碼或觀望", "warning", [fair_price, cheap_price, cheap_price*0.9], [expensive_price, expensive_price*1.1]
+        else:
+            return f"🟡 殖利率 {yield_rate:.1f}% (合理區)，建議分批低掛", "neutral", [current_price*0.98, fair_price, cheap_price], [expensive_price, expensive_price*1.1]
+
+    # === 判斷邏輯 B：市值型/成長型/主動型 (技術指標模型) ===
+    else:
+        drop_from_high = ((period_high - current_price) / period_high) * 100
+        
+        if rsi < 35 or drop_from_high > 10:
+            return f"🟢 技術面超跌 (回檔 {drop_from_high:.1f}%)，適合建倉", "safe", [current_price, current_price*0.95, current_price*0.9], [current_price*1.1, period_high]
+        elif rsi > 70 or current_price > ma20 * 1.15:
+            return "🔴 乖離率過高，短線過熱追高風險大", "warning", [ma20, ma20*0.95, period_high*0.85], [current_price*1.05, current_price*1.1]
+        else:
+            return "🟡 趨勢整理中，維持網格紀律操作", "neutral", [current_price*0.98, period_high*0.92, period_high*0.85], [period_high, period_high*1.1]
+
+def main():
+    results = {}
+    for symbol in STOCKS:
+        try:
+            short_name = symbol.replace('.TW', '')
+            ticker = yf.Ticker(symbol)
+            # 抓取近半年資料，排除空值
+            df = ticker.history(period="6mo")
+            if df.empty:
+                print(f"[{short_name}] 目前無歷史資料 (可能為新上市)")
+                continue
+            
+            # 計算 MA20
+            df['MA20'] = df['Close'].rolling(window=20).mean()
+            
+            # 計算 RSI
+            delta = df['Close'].diff()
+            gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+            loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+            rs = gain / loss
+            df['RSI'] = 100 - (100 / (1 + rs))
+            
+            latest = df.iloc[-1]
+            period_high = df['High'].max()
+            current_price = latest['Close']
+            
+            # 防呆機制：若資料不足導致 RSI/MA20 為 NaN，設定預設值
+            rsi_val = latest['RSI'] if not pd.isna(latest['RSI']) else 50
+            ma20_val = latest['MA20'] if not pd.isna(latest['MA20']) else current_price
+
+            advice_text, status_type, buys, sells = get_enhanced_advice(
+                short_name, current_price, rsi_val, ma20_val, period_high
+            )
+            
+            results[short_name] = {
+                'name': short_name,
+                'price': round(current_price, 2),
+                'high': round(period_high, 2),
+                'rsi': round(rsi_val, 1),
+                'ma20': round(ma20_val, 2),
+                'advice': advice_text,
+                'status_type': status_type,
+                'buy_grids': [round(b, 2) for b in buys],
+                'sell_grids': [round(s, 2) for s in sells],
+                'updated_at': datetime.now().strftime("%Y-%m-%d %H:%M")
+            }
+            print(f"[{short_name}] 分析完成")
+            
+        except Exception as e:
+            print(f"處理 {symbol} 時發生錯誤: {e}")
+
+    # 輸出成 JSON 檔案供前端讀取
+    with open('data.json', 'w', encoding='utf-8') as f:
+        json.dump(results, f, ensure_ascii=False, indent=2)
+
+if __name__ == "__main__":
+    main()
