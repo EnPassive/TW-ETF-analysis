@@ -123,3 +123,52 @@ def main():
 
             ticker = yf.Ticker(symbol)
             df = ticker.history(period="6mo")
+            if df.empty: continue
+            
+            trailing_div = get_trailing_12m_dividend(ticker)
+
+            close = df['Close']
+            current_price = float(close.iloc[-1])
+            period_high = float(df['High'].max())
+            
+            ma20 = float(close.rolling(20).mean().iloc[-1])
+            atr = float(close.diff().abs().rolling(14).mean().iloc[-1])
+            if pd.isna(atr): atr = current_price * 0.02 
+            
+            delta = close.diff()
+            gain = delta.where(delta > 0, 0).rolling(14).mean()
+            loss = -delta.where(delta < 0, 0).rolling(14).mean()
+            rs = gain / (loss + 1e-9)
+            rsi = float(100 - (100 / (1 + rs.iloc[-1])))
+            if pd.isna(rsi): rsi = 50
+            
+            advice, status, buys, sells, yield_rate = get_disciplined_advice(
+                short_name, current_price, rsi, ma20, period_high, atr, market_regime, trailing_div
+            )
+            
+            results[short_name] = {
+                'name': short_name,
+                'category': category,
+                'price': round(current_price, 2),
+                'rsi': round(rsi, 1),
+                'ma20': round(ma20, 2),
+                'high': round(period_high, 2),
+                'atr': round(atr, 2),
+                'trailing_div': round(trailing_div, 2),
+                'yield_rate': round(yield_rate, 1) if yield_rate > 0 else "-",
+                'advice': advice,
+                'status_type': status,
+                'buy_grids': [round(b, 2) for b in buys],
+                'sell_grids': [round(s, 2) for s in sells],
+                'market_regime': market_text,
+                'updated_at': datetime.now().strftime("%Y-%m-%d %H:%M")
+            }
+            print(f"[{short_name}] 分析完成")
+        except Exception as e:
+            print(f"[{symbol}] 錯誤: {e}")
+
+    with open('data.json', 'w', encoding='utf-8') as f:
+        json.dump(results, f, ensure_ascii=False, indent=2)
+
+if __name__ == "__main__":
+    main()
