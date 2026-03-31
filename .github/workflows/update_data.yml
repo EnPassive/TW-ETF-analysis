@@ -1,0 +1,37 @@
+name: EnPassive Daily ETF Analysis
+
+on:
+  schedule:
+    # UTC 時間 07:00 等於台灣時間 15:00 (台股收盤後)
+    - cron: '0 7 * * 1-5'
+  workflow_dispatch: # 允許在 GitHub 網頁上手動點擊執行
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Requirements
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Analysis Script
+        run: python analysis.py
+
+      - name: Commit and Push changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add data.json
+          # 如果 data.json 有變動才 commit
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update ETF data" && git push)
