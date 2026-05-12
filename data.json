@@ -2,34 +2,34 @@
   "0056": {
     "name": "0056",
     "category": "dividend",
-    "price": 45.76,
-    "rsi": 84.2,
-    "ma20": 41.45,
-    "high": 45.79,
+    "price": 45.58,
+    "rsi": 83.8,
+    "ma20": 41.44,
+    "high": 45.95,
     "trailing_div": 3.6,
     "yield_rate": 7.9,
     "advice": "🟢 經風險調整殖利率達 7.3% (超值)，建議分批建倉",
     "status_type": "safe",
     "buy_grids": [
-      45.21,
-      44.84
+      45.04,
+      44.67
     ],
     "sell_grids": [
       55.35,
       71.96
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "近四季真實",
     "_stability": 0.93
   },
   "00878": {
     "name": "00878",
     "category": "dividend",
-    "price": 28.28,
-    "rsi": 89.4,
+    "price": 28.13,
+    "rsi": 89.0,
     "ma20": 25.32,
-    "high": 28.29,
+    "high": 28.37,
     "trailing_div": 1.69,
     "yield_rate": 6.0,
     "advice": "🔴 調整後殖利率僅 5.5% 或過熱，建議減碼或觀望",
@@ -39,197 +39,197 @@
       21.12
     ],
     "sell_grids": [
-      28.62,
-      28.85
+      28.46,
+      28.69
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "近四季真實",
     "_stability": 0.92
   },
   "00919": {
     "name": "00919",
     "category": "dividend",
-    "price": 25.75,
-    "rsi": 80.1,
-    "ma20": 23.87,
-    "high": 25.77,
+    "price": 25.73,
+    "rsi": 80.3,
+    "ma20": 24.02,
+    "high": 25.88,
     "trailing_div": 2.58,
     "yield_rate": 10.0,
     "advice": "🟢 經風險調整殖利率達 8.1% (超值)，建議分批建倉",
     "status_type": "safe",
     "buy_grids": [
-      25.5,
-      25.23
+      25.48,
+      25.22
     ],
     "sell_grids": [
       39.69,
       51.6
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "近四季真實",
     "_stability": 0.81
   },
   "00918": {
     "name": "00918",
     "category": "dividend",
-    "price": 25.38,
-    "rsi": 78.2,
-    "ma20": 23.66,
-    "high": 25.4,
+    "price": 25.49,
+    "rsi": 77.9,
+    "ma20": 23.81,
+    "high": 25.61,
     "trailing_div": 2.4,
-    "yield_rate": 9.5,
+    "yield_rate": 9.4,
     "advice": "🟢 經風險調整殖利率達 8.2% (超值)，建議分批建倉",
     "status_type": "safe",
     "buy_grids": [
-      25.15,
-      24.87
+      25.26,
+      24.98
     ],
     "sell_grids": [
       37.0,
       48.1
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "近四季真實",
     "_stability": 0.87
   },
   "0050": {
     "name": "0050",
     "category": "market",
-    "price": 96.9,
-    "rsi": 82.6,
-    "ma20": 89.65,
+    "price": 96.85,
+    "rsi": 80.9,
+    "ma20": 90.46,
     "high": 98.4,
     "trailing_div": 4.0,
     "yield_rate": 4.1,
     "advice": "🔴 RSI 嚴重過熱 (>75)，嚴禁追高，建議部分停利",
     "status_type": "warning",
     "buy_grids": [
-      85.17,
-      80.68
+      85.94,
+      81.42
     ],
     "sell_grids": [
-      98.25
+      98.1
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "單季推估年化",
     "_stability": 0.7
   },
   "00993A": {
     "name": "00993A",
     "category": "strategy",
-    "price": 13.31,
-    "rsi": 72.3,
-    "ma20": 12.52,
-    "high": 13.48,
+    "price": 13.28,
+    "rsi": 67.8,
+    "ma20": 12.61,
+    "high": 13.55,
     "trailing_div": 0.0,
     "yield_rate": "-",
     "advice": "🟡 價格於均線附近震盪，小量低掛或觀望",
     "status_type": "neutral",
     "buy_grids": [
       13.06,
-      12.52
+      12.61
     ],
     "sell_grids": [
-      14.64
+      14.61
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "無資料",
     "_stability": 0.0
   },
   "00981A": {
     "name": "00981A",
     "category": "strategy",
-    "price": 29.69,
-    "rsi": 77.7,
-    "ma20": 27.16,
-    "high": 30.0,
+    "price": 29.97,
+    "rsi": 77.3,
+    "ma20": 27.51,
+    "high": 30.43,
     "trailing_div": 1.64,
     "yield_rate": 5.5,
     "advice": "🔴 RSI 嚴重過熱 (>75)，嚴禁追高，建議部分停利",
     "status_type": "warning",
     "buy_grids": [
-      25.8,
-      24.44
+      26.13,
+      24.75
     ],
     "sell_grids": [
-      30.17
+      30.44
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "單季推估年化",
     "_stability": 0.7
   },
   "00982A": {
     "name": "00982A",
     "category": "strategy",
-    "price": 23.04,
-    "rsi": 77.2,
-    "ma20": 20.76,
-    "high": 23.07,
+    "price": 23.27,
+    "rsi": 76.2,
+    "ma20": 21.01,
+    "high": 23.48,
     "trailing_div": 1.51,
     "yield_rate": 6.5,
     "advice": "🔴 RSI 嚴重過熱 (>75)，嚴禁追高，建議部分停利",
     "status_type": "warning",
     "buy_grids": [
-      19.72,
-      18.68
+      19.96,
+      18.91
     ],
     "sell_grids": [
-      23.41
+      23.63
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "單季推估年化",
     "_stability": 0.7
   },
   "009816": {
     "name": "009816",
     "category": "strategy",
-    "price": 14.15,
-    "rsi": 90.6,
-    "ma20": 12.84,
+    "price": 14.06,
+    "rsi": 86.4,
+    "ma20": 12.97,
     "high": 14.22,
     "trailing_div": 0.0,
     "yield_rate": "-",
     "advice": "🔴 RSI 嚴重過熱 (>75)，嚴禁追高，建議部分停利",
     "status_type": "warning",
     "buy_grids": [
-      12.2,
-      11.56
+      12.32,
+      11.68
     ],
     "sell_grids": [
-      14.33
+      14.23
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "無資料",
     "_stability": 0.0
   },
   "00988A": {
     "name": "00988A",
     "category": "strategy",
-    "price": 19.02,
-    "rsi": 81.0,
-    "ma20": 16.82,
-    "high": 19.02,
+    "price": 19.93,
+    "rsi": 82.9,
+    "ma20": 17.08,
+    "high": 20.1,
     "trailing_div": 0.0,
     "yield_rate": "-",
     "advice": "🔴 RSI 嚴重過熱 (>75)，嚴禁追高，建議部分停利",
     "status_type": "warning",
     "buy_grids": [
-      15.98,
-      15.14
+      16.22,
+      15.37
     ],
     "sell_grids": [
-      19.4
+      20.35
     ],
     "market_regime": "🟢 多頭市場 (適合佈局)",
-    "updated_at": "2026-05-11 18:40",
+    "updated_at": "2026-05-12 17:45",
     "_div_source": "無資料",
     "_stability": 0.0
   }
